@@ -11,17 +11,34 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#FAFAFA',
-        primaryAccent: '#18181B',
+        primary: {
+          DEFAULT: '#18181B',
+          dark: '#FAFAFA',
+        },
+        primaryAccent: {
+          DEFAULT: '#FAFAFA',
+          dark: '#18181B',
+        },
         brand: '#FF4017',
         background: {
-          DEFAULT: '#111113',
-          secondary: '#27272A'
+          DEFAULT: '#fff',
+          dark: '#111113',
+          secondary: '#f5f5f5',
+          'secondary-dark': '#27272A',
         },
-        secondary: '#f5f5f5',
+        secondary: {
+          DEFAULT: '#18181B',
+          dark: '#f5f5f5',
+        },
         border: 'rgba(var(--color-border-default))',
-        accent: '#27272A',
-        muted: '#A1A1AA',
+        accent: {
+          DEFAULT: '#f5f5f5',
+          dark: '#27272A',
+        },
+        muted: {
+          DEFAULT: '#A1A1AA',
+          dark: '#A1A1AA',
+        },
         destructive: '#E53935',
         positive: '#22C55E'
       },

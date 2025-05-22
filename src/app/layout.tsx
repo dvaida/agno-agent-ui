@@ -3,6 +3,8 @@ import { DM_Mono, Geist } from 'next/font/google'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { Toaster } from '@/components/ui/sonner'
 import './globals.css'
+import ThemeProviderWrapper from '@/components/ThemeProviderWrapper'
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   weight: '400',
@@ -27,10 +29,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html className="light" lang="en">
       <body className={`${geistSans.variable} ${dmMono.variable} antialiased`}>
-        <NuqsAdapter>{children}</NuqsAdapter>
-        <Toaster />
+        <ThemeProviderWrapper>
+          <NuqsAdapter>{children}</NuqsAdapter>
+          <Toaster />
+        </ThemeProviderWrapper>
       </body>
     </html>
   )
