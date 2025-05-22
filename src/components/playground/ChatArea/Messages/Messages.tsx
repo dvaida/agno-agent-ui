@@ -144,11 +144,50 @@ const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
   </div>
 )
 
-const ToolComponent = memo(({ tools }: ToolCallProps) => (
-  <div className="cursor-default rounded-full bg-accent px-2 py-1.5 text-xs">
-    <p className="font-dmmono uppercase text-primary/80">{tools.tool_name}</p>
-  </div>
-))
+const ToolComponent = memo(({ tools }: ToolCallProps) => {
+  const [isExpanded, setIsExpanded] = React.useState(false)
+
+  return (
+    <div className="flex flex-col gap-2 rounded-lg border border-accent/20 bg-background-secondary p-3">
+      <div 
+        className="flex items-center gap-2 cursor-pointer" 
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <div className="rounded-full bg-accent px-2 py-1 text-xs">
+          <p className="font-dmmono uppercase text-primary/80">{tools.tool_name}</p>
+        </div>
+        {tools.tool_call_error && (
+          <span className="text-xs text-destructive">Error</span>
+        )}
+        <Icon 
+          type={isExpanded ? "chevron-up" : "chevron-down"} 
+          size="sm" 
+          className="ml-auto"
+        />
+      </div>
+      {isExpanded && (
+        <div className="flex flex-col gap-2">
+          {Object.entries(tools.tool_args).length > 0 && (
+            <div className="flex flex-col gap-1">
+              <p className="text-xs text-muted">Arguments:</p>
+              <pre className="rounded bg-background p-2 text-xs font-mono whitespace-pre-wrap break-words">
+                {JSON.stringify(tools.tool_args, null, 2)}
+              </pre>
+            </div>
+          )}
+          {tools.content && (
+            <div className="flex flex-col gap-1">
+              <p className="text-xs text-muted">Result:</p>
+              <pre className="rounded bg-background p-2 text-xs font-mono whitespace-pre-wrap break-words">
+                {tools.content}
+              </pre>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+})
 ToolComponent.displayName = 'ToolComponent'
 const Messages = ({ messages }: MessageListProps) => {
   if (messages.length === 0) {
