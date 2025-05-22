@@ -144,11 +144,49 @@ const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
   </div>
 )
 
-const ToolComponent = memo(({ tools }: ToolCallProps) => (
-  <div className="cursor-default rounded-full bg-accent px-2 py-1.5 text-xs">
-    <p className="font-dmmono uppercase text-primary/80">{tools.tool_name}</p>
-  </div>
-))
+const ToolComponent = memo(({ tools }: ToolCallProps) => {
+  const { tool_name, tool_args, content, tool_call_error } = tools
+
+  return (
+    <div className="flex cursor-default flex-col gap-1 rounded-md bg-accent p-2 text-xs">
+      <p className="font-dmmono uppercase text-primary/80">{tool_name}</p>
+
+      {tool_args && Object.keys(tool_args).length > 0 && (
+        <div className="ml-2 flex flex-col">
+          <p className="font-medium text-primary/70">Arguments:</p>
+          <ul className="ml-2 list-disc list-inside">
+            {Object.entries(tool_args).map(([key, value]) => (
+              <li key={key} className="font-dmmono text-primary/60">
+                <span className="font-semibold">{key}:</span> {String(value)}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {content !== null && content !== '' ? (
+        <div className="ml-2 flex flex-col">
+          <p className="font-medium text-primary/70">Result:</p>
+          <p className="font-dmmono whitespace-pre-wrap text-primary/60">
+            {content}
+          </p>
+        </div>
+      ) : !tool_call_error ? (
+        <div className="ml-2 flex flex-col">
+          <p className="font-medium text-primary/70">Result:</p>
+          <p className="font-dmmono text-primary/60 italic">No output</p>
+        </div>
+      ) : null}
+
+      {tool_call_error && (
+        <div className="ml-2 flex items-center gap-1">
+          <Icon type="error" size="xs" color="danger" />
+          <p className="font-medium text-danger">Tool Execution Error</p>
+        </div>
+      )}
+    </div>
+  )
+})
 ToolComponent.displayName = 'ToolComponent'
 const Messages = ({ messages }: MessageListProps) => {
   if (messages.length === 0) {
